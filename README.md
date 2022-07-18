@@ -7,7 +7,6 @@ utilized in the project by utlilizing the JDBC driver to be able to connect and 
 and retrieve data. SceneBuilder was also utilized in order to more efficiently create the GUIs; scenebuilder creates 2 files, one java file(called controller 
 class) and the other a .fxml file that keeps track of any effects or styles you apply to the GUI from within Scenebuilder.
 The only file that isnt a java or .fxml file is the main app which runs the actual application and is a javafx application file.
-
 Intended Purpose:
 ===========================================================================================================================================================
 
