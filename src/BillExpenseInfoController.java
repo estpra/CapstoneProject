@@ -185,7 +185,6 @@ message4.setText("monthly total until deleted or modified*");
         noteForDates.setText("*Note: Date of Entry and Bill Due Date entries are FINAL once bill is saved*");
     }
 
-
     public void missingInfoError(ActionEvent event)
     {
         try {
