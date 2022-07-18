@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="billExpenseInfoPane" prefHeight="450.0" prefWidth="695.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="BillExpenseInfoController">
+   <children>
+      <Label layoutX="40.0" layoutY="14.0" text="Bill/Expense Info">
+         <font>
+            <Font name="System Bold" size="25.0" />
+         </font>
+      </Label>
+      <Label layoutX="15.0" layoutY="77.0" text="Category" />
+      <ComboBox fx:id="categoryTxtField" editable="true" layoutX="80.0" layoutY="73.0" onMouseClicked="#setCategoryTxtField" prefHeight="26.0" prefWidth="172.0" promptText="Enter a new or exisitng " />
+      <TextField fx:id="amountTxtField" layoutX="80.0" layoutY="128.0" prefHeight="25.0" prefWidth="117.0" promptText="\$    *required*" />
+      <Label layoutX="18.0" layoutY="132.0" text="Amount" />
+      <Label layoutX="14.0" layoutY="188.0" prefHeight="17.0" prefWidth="72.0" text="Date of Entry" wrapText="true" />
+      <Label layoutX="9.0" layoutY="299.0" text="Description" />
+      <TextArea layoutX="80.0" layoutY="247.0" prefHeight="150.0" prefWidth="215.0" promptText="Enter any notes or exceptions for bill here" wrapText="true">
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+      </TextArea>
+      <Label layoutX="327.0" layoutY="77.0" text="Bill Due Date" />
+      <CheckBox fx:id="yesCheckBox" layoutX="472.0" layoutY="133.0" mnemonicParsing="false" onAction="#showRecurringBillNote" text="Yes" />
+      <CheckBox fx:id="noCheckBox" layoutX="545.0" layoutY="133.0" mnemonicParsing="false" onAction="#showRecurringBillNote" text="No" />
+      <Label layoutX="323.0" layoutY="133.0" text="Recurring Bill?(Required)" />
+      <Label layoutX="323.0" layoutY="252.0" text="Bill Name" />
+      <TextField fx:id="billNameTxtField" alignment="CENTER" layoutX="392.0" layoutY="248.0" promptText="*required*" />
+      <Label layoutX="323.0" layoutY="299.0" text="Image" />
+      <Button fx:id="imageSelectButton" layoutX="392.0" layoutY="295.0" mnemonicParsing="false" onAction="#imageButtonAction" text="Select an Image(optional, 4 max)" />
+      <Label layoutX="309.0" layoutY="156.0" />
+      <Label fx:id="message1" layoutX="284.0" layoutY="156.0" />
+      <Label fx:id="message2" layoutX="284.0" layoutY="176.0" />
+      <Label fx:id="message3" layoutX="284.0" layoutY="197.0" />
+      <Label fx:id="message4" layoutX="284.0" layoutY="217.0" />
+      <Label fx:id="fileSelected1" layoutX="342.0" layoutY="360.0" />
+      <Label fx:id="fileSelected2" layoutX="342.0" layoutY="336.0" />
+      <Label fx:id="fileSelected3" layoutX="343.0" layoutY="388.0" />
+      <Label fx:id="fileSelected4" layoutX="340.0" layoutY="413.0" />
+      <Label fx:id="missingInfoLabel" layoutX="92.0" layoutY="419.0" textFill="#f20101" />
+      <Label fx:id="noteForDates" layoutX="251.0" layoutY="21.0" textFill="#f20101" />
+      <Button fx:id="enterBillExpenseInfoButton" layoutX="23.0" layoutY="409.0" mnemonicParsing="false" onAction="#missingInfoError" text="Enter" textFill="#05b90e">
+         <padding>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </padding>
+      </Button>
+      <DatePicker fx:id="dateOfEntryTxtField" layoutX="93.0" layoutY="184.0" prefHeight="25.0" prefWidth="155.0" promptText="        *required*" />
+      <DatePicker fx:id="billDueDateTxtField" layoutX="411.0" layoutY="74.0" prefHeight="25.0" prefWidth="161.0" promptText="         *required*" />
+      <Button fx:id="cancelBillBttn" layoutX="572.0" layoutY="409.0" mnemonicParsing="false" onMouseClicked="#cancelBillCreation" text="Cancel Bill" textFill="#f50707">
+         <padding>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </padding>
+      </Button>
+   </children>
+</AnchorPane>
