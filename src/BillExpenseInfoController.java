@@ -1,4 +1,7 @@
+import com.sun.javafx.collections.ImmutableObservableList;
+import com.sun.javafx.collections.ObservableListWrapper;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -18,14 +21,16 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import javafx.stage.Stage;
 
 public class BillExpenseInfoController
 {
     @FXML
-    private Button imageSelectButton, enterBillExpenseInfoButton, cancelBillBttn;
+    private Button imageSelectButton, enterBillExpenseInfoButton, cancelBillBttn, refreshButton;
 
     @FXML
     private Label fileSelected1, fileSelected2, fileSelected3, fileSelected4;
@@ -79,40 +84,10 @@ public class BillExpenseInfoController
             }
     }
 
-//    public void setCategoryTxtField()
-//    {
-//        //Added this if statement to fix bug where the combobox would keep adding the items to the list each time the box was clicked(which is the action we chose to invoke this method)
-//        if(categoryTxtField.getItems().isEmpty()) {
-////        if(categoryTxtField.getItems().size() < 1) {
-//            DatabaseConnection connectNow = new DatabaseConnection();
-//            Connection connectDB = connectNow.getConnection();
-//            String query = "SELECT Categories.categoryName FROM Capstone.Categories";
-//            try {
-//                Statement statement = connectDB.createStatement();
-//                ResultSet queryResult = statement.executeQuery(query);
-////                System.err.println(queryResult.next());
-////                System.err.println(queryResult.getString(1));
-//                while(queryResult.next())
-//                {
-//                    categoryTxtField.getItems().add(queryResult.getString(1));
-//                }
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//                e.getCause();
-//            }
-//            try {
-//                connectNow.getConnection().close();
-//            } catch (SQLException e) {
-//                e.printStackTrace();
-//            }
-//        }
-//    }
-
     public void setCategoryTxtField()
     {
-        ComboBox<String> temp = new ComboBox<>();
         //Added this if statement to fix bug where the combobox would keep adding the items to the list each time the box was clicked(which is the action we chose to invoke this method)
-        if(temp.getItems().isEmpty()) {
+        if(categoryTxtField.getItems().isEmpty()) {
 //        if(categoryTxtField.getItems().size() < 1) {
             DatabaseConnection connectNow = new DatabaseConnection();
             Connection connectDB = connectNow.getConnection();
@@ -138,6 +113,33 @@ public class BillExpenseInfoController
         }
     }
 
+    public void refreshCategories()
+    {
+        //Added this if statement to fix bug where the combobox would keep adding the items to the list each time the box was clicked(which is the action we chose to invoke this method)
+            DatabaseConnection connectNow = new DatabaseConnection();
+            Connection connectDB = connectNow.getConnection();
+            String query = "SELECT Categories.categoryName FROM Capstone.Categories";
+            categoryTxtField.getItems().removeAll();
+            try {
+                Statement statement = connectDB.createStatement();
+                ResultSet queryResult = statement.executeQuery(query);
+//                System.err.println(queryResult.next());
+//                System.err.println(queryResult.getString(1));
+                while(queryResult.next())
+                {
+                    categoryTxtField.getItems().add(queryResult.getString(1));
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                e.getCause();
+            }
+            try {
+                connectNow.getConnection().close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+    }
+
 
     public void filterAsUserTypes()
     {
@@ -148,7 +150,7 @@ public class BillExpenseInfoController
 
                 // Filter the options based on the user's input
 //                ObservableList<String> filteredOptions = options.filtered(option -> option.startsWith(input));
-        ObservableList<String> filteredOptions = options.filtered(option -> option.toLowerCase().startsWith(input.toLowerCase()));
+        ObservableList<String> filteredOptions = options.filtered(option -> option.toLowerCase().contentEquals(input.toLowerCase()));
 
         // Update the ComboBox with the filtered options
                 categoryTxtField.setItems(filteredOptions);
