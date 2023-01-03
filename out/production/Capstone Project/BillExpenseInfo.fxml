@@ -19,7 +19,7 @@
          </font>
       </Label>
       <Label layoutX="15.0" layoutY="77.0" text="Category" />
-      <ComboBox fx:id="categoryTxtField" editable="true" layoutX="72.0" layoutY="73.0" onKeyReleased="#filterAsUserTypes" onMouseClicked="#setCategoryTxtField" prefHeight="26.0" prefWidth="172.0" promptText="Enter a new or exisitng " />
+      <ComboBox fx:id="categoryTxtField" editable="true" layoutX="80.0" layoutY="73.0" onKeyReleased="#filterAsUserTypes" onMouseClicked="#setCategoryTxtField" prefHeight="26.0" prefWidth="172.0" promptText="Enter a new or exisitng " />
       <TextField fx:id="amountTxtField" layoutX="80.0" layoutY="128.0" prefHeight="25.0" prefWidth="117.0" promptText="\$    *required*" />
       <Label layoutX="18.0" layoutY="132.0" text="Amount" />
       <Label layoutX="14.0" layoutY="188.0" prefHeight="17.0" prefWidth="72.0" text="Date of Entry" wrapText="true" />
@@ -60,6 +60,5 @@
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
          </padding>
       </Button>
-      <Button fx:id="refreshButton" layoutX="244.0" layoutY="73.0" mnemonicParsing="false" onAction="#refreshCategories" text="Refresh" />
    </children>
 </AnchorPane>
