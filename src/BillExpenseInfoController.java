@@ -17,6 +17,7 @@ import javafx.stage.FileChooser;
 
 import javafx.event.ActionEvent;
 
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.sql.Connection;
@@ -149,6 +150,32 @@ public class BillExpenseInfoController
 
     public void filterAsUserTypes()
     {
+        //Added this if statement to fix bug where the combobox would keep adding the items to the list each time the box was clicked(which is the action we chose to invoke this method)
+        DatabaseConnection connectNow = new DatabaseConnection();
+        Connection connectDB = connectNow.getConnection();
+        String query = "SELECT Categories.categoryName FROM Capstone.Categories";
+        //Beauty, with one google search, we figured out how to instantiate an ObservableList and now the refresh button and works exactly as intended
+        //This fixed issue where when we clicked on refresh button more than once, we would get a crazy error
+        ObservableList<String> refreshList = FXCollections.observableArrayList();
+        categoryTxtField.setItems(refreshList);
+        try {
+            Statement statement = connectDB.createStatement();
+            ResultSet queryResult = statement.executeQuery(query);
+//                System.err.println(queryResult.next());
+//                System.err.println(queryResult.getString(1));
+            while(queryResult.next())
+            {
+                categoryTxtField.getItems().add(queryResult.getString(1));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            e.getCause();
+        }
+        try {
+            connectNow.getConnection().close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
                 // Get the user's input
                 String input = categoryTxtField.getEditor().getText();
 
