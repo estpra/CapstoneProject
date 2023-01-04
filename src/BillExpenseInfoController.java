@@ -152,7 +152,7 @@ public class BillExpenseInfoController
                 // Get the user's input
                 String input = categoryTxtField.getEditor().getText();
 
-                // Get the current options on the list
+                // Get the current options in the list
                 ObservableList<String> options = categoryTxtField.getItems();
 
                 // Filter the options based on the user's input
