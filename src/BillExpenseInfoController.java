@@ -1,7 +1,9 @@
 import com.sun.javafx.collections.ImmutableObservableList;
 import com.sun.javafx.collections.ObservableListWrapper;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -22,6 +24,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -119,7 +122,10 @@ public class BillExpenseInfoController
             DatabaseConnection connectNow = new DatabaseConnection();
             Connection connectDB = connectNow.getConnection();
             String query = "SELECT Categories.categoryName FROM Capstone.Categories";
-            categoryTxtField.getItems().removeAll();
+            //Beauty, with one google search, we figured out how to instantiate an ObservableList and now the refresh button and works exactly as intended
+        //This fixed issue where when we clicked on refresh button more than once, we would get a crazy error
+            ObservableList<String> refreshList = FXCollections.observableArrayList();
+            categoryTxtField.setItems(refreshList);
             try {
                 Statement statement = connectDB.createStatement();
                 ResultSet queryResult = statement.executeQuery(query);
@@ -146,11 +152,11 @@ public class BillExpenseInfoController
                 // Get the user's input
                 String input = categoryTxtField.getEditor().getText();
 
+                // Get the current options on the list
                 ObservableList<String> options = categoryTxtField.getItems();
 
                 // Filter the options based on the user's input
-//                ObservableList<String> filteredOptions = options.filtered(option -> option.startsWith(input));
-        ObservableList<String> filteredOptions = options.filtered(option -> option.toLowerCase().contentEquals(input.toLowerCase()));
+        ObservableList<String> filteredOptions = options.filtered(option -> option.toLowerCase().startsWith(input.toLowerCase()));
 
         // Update the ComboBox with the filtered options
                 categoryTxtField.setItems(filteredOptions);
