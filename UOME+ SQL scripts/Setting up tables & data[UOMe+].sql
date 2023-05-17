@@ -352,6 +352,32 @@ end;
 //
 delimiter ; 
 
+
+#this function calculates which month you spent the most money overall between the two inputted dates
+delimiter //
+create function mostMoneySpentBetweenMonths(monthAndYear1 varchar(25), monthAndYear2 varchar(25))
+returns decimal(10,2) 
+deterministic
+begin
+declare total1 decimal(10,2);
+declare total2 decimal(10,2);
+declare mostExpensive decimal(10,2);
+set total1 = ifnull((select sum(e.amount) from capstone.expenses e where substr(e.dateOfEntry, 1, 2) = substr(monthAndYear1, 1, 2) and 
+substr(e.dateOfEntry, 7) = substr(monthAndYear1, 4)), 0);
+set total1 = total1 + ifnull((select sum(ep.totalMoneyOwedByEach) from capstone.expensesPeople ep, capstone.expenses e where e.expenseID = ep.expenseID 
+and substr(ep.dateAgreedToPay, 1, 2) = substr(monthAndYear1, 1, 2) and
+substr(ep.dateAgreedToPay, 7) = substr(monthAndYear1, 4)), 0);
+set total2 = ifnull((select sum(e.amount) from capstone.expenses e where substr(e.dateOfEntry, 1, 2) = substr(monthAndYear2, 1, 2) and 
+substr(e.dateOfEntry, 7) = substr(monthAndYear2, 4)), 0);
+set total2 = total2 + ifnull((select sum(ep.totalMoneyOwedByEach) from capstone.expensesPeople ep, capstone.expenses e where e.expenseID = ep.expenseID 
+and substr(ep.dateAgreedToPay, 1, 2) = substr(monthAndYear2, 1, 2) and
+substr(ep.dateAgreedToPay, 7) = substr(monthAndYear2, 4)), 0);
+set mostExpensive = if(total1 > total2, total1, total2);
+return mostExpensive;
+end;
+//
+delimiter ;
+
 -- delimiter //
 -- create function totalIncreaseForCategoryMonthly(monthAndYear varchar(25), categoryName varchar(100))
 -- return decimal(10,2) 
@@ -443,6 +469,7 @@ select cateogryMostMoneySpentOnMonth('03/23');
 select cateogryMostMoneySpentOnMonth('01/23');
 
 select totalIncreaseBetween('03/23', '01/23', 'Utility Bills') as totalIncrease;
+select mostMoneySpentBetweenMonths('03/23', '01/23');
 
 -- -----------------------------------------------------------------------------------------------------------------------------------
 -- **********Testing parts of functions to make sure they are doing what they are supposed to correctly
