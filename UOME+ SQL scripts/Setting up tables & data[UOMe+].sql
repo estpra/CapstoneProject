@@ -167,6 +167,23 @@ return total;
 end;
 
 
+delimiter //
+create function totalAmountForMonth(monthAndYear varchar(25))
+returns decimal(10,2)
+deterministic
+begin 
+declare total decimal;
+-- this line calcualtes the total amount that you have wasted for the given category in the expeneses table only
+set total = ifnull((select sum(e.amount) from capstone.expenses e where substr(e.dateOfEntry, 1, 2) = substr(monthAndYear, 1, 2) and 
+substr(e.dateOfEntry, 7) = substr(monthAndYear, 4)), 0);
+-- this line adds the previous total calcuatled from the previous line with the total from the money you're owed from the totalMoneyOwedByEach column
+-- from the expensesPeople table
+set total = total + ifnull((select sum(ep.totalMoneyOwedByEach) from capstone.expensesPeople ep, capstone.expenses e where e.expenseID = ep.expenseID 
+and substr(ep.dateAgreedToPay, 1, 2) = substr(monthAndYear, 1, 2) and
+substr(ep.dateAgreedToPay, 7) = substr(monthAndYear, 4)), 0);
+return total;
+end;
+
 
 -- this is a test function to see what happens if I dont relate the combo table with expenses table when comparing the inputted category
 -- with the tables
@@ -378,6 +395,50 @@ end;
 //
 delimiter ;
 
+
+
+delimiter //
+create function estimatedTotalMonthlyTotal(monthAndYear varchar(25))
+returns decimal(10,2) 
+deterministic
+begin
+declare estAverage decimal(10,2);
+#NOTE: Will have to implement a fix to acccount for division by zero for the line below
+set estAverage = (totalAmountForMonth((concat((if(((cast(substr(monthAndYear, 1, 2) as decimal(10,2)) - 1) < 10), 
+    (concat("0", ((cast(substr(monthAndYear, 1, 2) as decimal(10,0))) - 1))), ((cast(substr(monthAndYear, 1, 2) as decimal(10,0))) - 1.0))), substr(monthAndYear, 3))))) / 
+    (select count(*) from capstone.expenses e, capstone.expensesPeople ep 
+    where e.expenseID = ep.expenseID and substr(e.dateOfEntry, 1, 2) = substr(monthAndYear, 1, 2) and 
+substr(e.dateOfEntry, 7) = substr(monthAndYear, 4) and substr(ep.dateAgreedToPay, 1, 2) = substr(monthAndYear, 1, 2) and
+substr(ep.dateAgreedToPay, 7) = substr(monthAndYear, 4));
+return estAverage;
+end;
+//
+delimiter ;
+
+
+delimiter //
+create function projectedMonthlyTotal(Year varchar(10))
+returns decimal(10,2)
+deterministic 
+begin
+declare projTotal decimal(10,2);
+declare numOfMonths int;
+declare totalForMonths decimal(10,2);
+declare loopCount int;
+set loopCount = 0;
+label: LOOP
+		set loopCount = loopCount + 1;
+        
+        
+        
+        if loopCount = (select count(*) from capstone.) then 
+			leave label;
+		end if;
+	end LOOP label;
+
+
+
+
 -- delimiter //
 -- create function totalIncreaseForCategoryMonthly(monthAndYear varchar(25), categoryName varchar(100))
 -- return decimal(10,2) 
@@ -471,6 +532,8 @@ select cateogryMostMoneySpentOnMonth('01/23');
 select totalIncreaseBetween('03/23', '01/23', 'Utility Bills') as totalIncrease;
 select mostMoneySpentBetweenMonths('03/23', '01/23');
 
+select totalAmountForMonth('01/23');
+select estimatedTotalMonthlyTotal('01/23');
 -- -----------------------------------------------------------------------------------------------------------------------------------
 -- **********Testing parts of functions to make sure they are doing what they are supposed to correctly
 -- -----------------------------------------------------------------------------------------------------------------------------------
