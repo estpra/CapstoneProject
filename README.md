@@ -1,5 +1,5 @@
 # CapstoneProject: Client-server program
-===========================================================================================================================================================
+
 Technical Information:
 This is a client-server project that uses JavaFx as the Library for the GUI and Java for the backend of the GUI. A MySQL database was also created and
 utilized in the project by utlilizing the JDBC driver to be able to connect and commumicate with the mySQL database from the Java project to store, update
